@@ -43,35 +43,40 @@ document.getElementById('manualScan').addEventListener('click', function() {
 let scannedCodes = [];
 
 // Setup QuaggaJS for barcode scanning
-Quagga.init({
-    inputStream: {
-        name: "Live",
-        type: "LiveStream",
-        target: document.querySelector('#barcodeResult'),    // Display the camera stream
-        constraints: {
-            facingMode: "environment" // Use the environment camera
+function startQuagga() {
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: document.querySelector('#barcodeResult'),    // Display the camera stream
+            constraints: {
+                facingMode: "environment" // Use the environment camera
+            }
+        },
+        decoder: {
+            readers: [
+                "code_128_reader", 
+                "ean_reader", 
+                "ean_8_reader", 
+                "code_39_reader", 
+                "code_39_vin_reader", 
+                "codabar_reader", 
+                "upc_reader", 
+                "upc_e_reader"
+            ]  // Expanded list of barcode types
         }
-    },
-    decoder: {
-        readers: [
-            "code_128_reader", 
-            "ean_reader", 
-            "ean_8_reader", 
-            "code_39_reader", 
-            "code_39_vin_reader", 
-            "codabar_reader", 
-            "upc_reader", 
-            "upc_e_reader"
-        ]  // Expanded list of barcode types
-    }
-}, function(err) {
-    if (err) {
-        console.log(err);
-        return;
-    }
-    console.log("Initialization finished. Ready to start");
-    Quagga.start();
-});
+    }, function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("Initialization finished. Ready to start");
+        Quagga.start();
+    });
+}
+
+// Start the Quagga scanner
+startQuagga();
 
 // Event listener for processed barcodes
 Quagga.onDetected(function(result) {
@@ -84,6 +89,12 @@ Quagga.onDetected(function(result) {
     // Update the UI to display the scanned codes
     const scannedCodesList = document.getElementById('scannedCodesList');
     scannedCodesList.innerHTML = scannedCodes.map(c => `<li>${c}</li>`).join('');
+    
+    // Stop scanning and wait for 2 seconds before resuming
+    Quagga.stop();
+    setTimeout(function() {
+        startQuagga(); // Restart the scanner
+    }, 2000);
 });
 
 // Error handling for barcode detection

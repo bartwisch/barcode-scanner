@@ -1,0 +1,40 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#barcodeResult {
+    width: 100%; /* Full width */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 600px; /* Limit max width */
+    aspect-ratio: 3 / 1; /* Set aspect ratio to 3:1 */
+    overflow: hidden; /* Hide overflow */
+    position: relative; /* Position relative for absolute children */
+}
+
+#scannedCodesList {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+
+#scanArea {
+    position: absolute;
+    top: 50%; /* Adjust as needed */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%; /* Width of the scanning area */
+    height: 50%; /* Height of the scanning area */
+    border: 2px solid red; /* Red border */
+    border-radius: 15px; /* Rounded corners */
+    pointer-events: none; /* Allow clicks to pass through */
+}

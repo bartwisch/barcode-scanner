@@ -8,40 +8,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    Barcode Scanner V0.1
     <div id="app">
         <button id="manualScan">Scan</button>
         <button id="autoScan">Auto Scan Toggle</button>
         <button id="toggleFlashlight">Flashlight Toggle</button>
-        <div id="barcodeResult"></div>
+        <div id="barcodeResult">
+            <div id="scanArea"></div> <!-- Red rounded rectangle for scanning area -->
+        </div>
         <ul id="scannedCodesList"></ul> <!-- List for scanned codes -->
     </div>
     <script src="app.js"></script>
 </body>
 </html>
-</write_to_file>
-
-Next, I will create the `styles.css` file for basic styling:
-
-<write_to_file>
-<path>styles.css</path>
-<content>
-#app {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
-
-button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#scannedCodesList {
-    margin-top: 20px;
-    list-style-type: none;
-    padding: 0;
-}
