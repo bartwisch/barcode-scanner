@@ -19,13 +19,15 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
     }
 });
 
+let autoScanActive = false;
+
 document.getElementById('autoScan').addEventListener('click', function() {
-    console.log('Auto scan clicked');
-    // Toggle continuous scanning
-    if (Quagga.running) {
-        Quagga.stop();
-    } else {
+    console.log('Auto scan toggled');
+    autoScanActive = !autoScanActive;
+    if (autoScanActive) {
         Quagga.start();
+    } else {
+        Quagga.stop();
     }
 });
 
@@ -37,15 +39,30 @@ document.getElementById('manualScan').addEventListener('click', function() {
     }
 });
 
+// Array to hold scanned codes
+let scannedCodes = [];
+
 // Setup QuaggaJS for barcode scanning
 Quagga.init({
     inputStream: {
         name: "Live",
         type: "LiveStream",
-        target: document.querySelector('#barcodeResult')    // Display the camera stream
+        target: document.querySelector('#barcodeResult'),    // Display the camera stream
+        constraints: {
+            facingMode: "environment" // Use the environment camera
+        }
     },
     decoder: {
-        readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader"]  // Expanded list of barcode types
+        readers: [
+            "code_128_reader", 
+            "ean_reader", 
+            "ean_8_reader", 
+            "code_39_reader", 
+            "code_39_vin_reader", 
+            "codabar_reader", 
+            "upc_reader", 
+            "upc_e_reader"
+        ]  // Expanded list of barcode types
     }
 }, function(err) {
     if (err) {
@@ -60,16 +77,20 @@ Quagga.init({
 Quagga.onDetected(function(result) {
     var code = result.codeResult.code;
     console.log("Barcode detected and processed : [" + code + "]", result);
-    document.getElementById('barcodeResult').innerHTML = "<strong>Scanned Code:</strong> " + code;
-    // Create a popup with the scanned code and an OK button
-    let popup = document.createElement('div');
-    popup.innerHTML = `<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black; z-index: 100;">
-        <p>Scanned Code: ${code}</p>
-        <button id="okButton">OK</button>
-    </div>`;
-    document.body.appendChild(popup);
-    document.getElementById('okButton').addEventListener('click', function() {
-        popup.remove();
-        window.location.reload(true);
-    });
+    
+    // Add the scanned code to the list
+    scannedCodes.push(code);
+    
+    // Update the UI to display the scanned codes
+    const scannedCodesList = document.getElementById('scannedCodesList');
+    scannedCodesList.innerHTML = scannedCodes.map(c => `<li>${c}</li>`).join('');
+});
+
+// Error handling for barcode detection
+Quagga.onProcessed(function(result) {
+    if (result && result.codeResult && result.codeResult.code) {
+        console.log("Barcode detected: " + result.codeResult.code);
+    } else {
+        console.log("No barcode detected");
+    }
 });
