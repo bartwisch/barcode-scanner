@@ -1,3 +1,5 @@
+let flashlightOn = false; // Track flashlight state
+
 document.getElementById('toggleFlashlight').addEventListener('click', function() {
     console.log('Toggle flashlight clicked');
     // Attempt to toggle the flashlight
@@ -8,8 +10,8 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
             if (typeof track.getCapabilities === 'function') {
                 let capabilities = track.getCapabilities();
                 if (capabilities.torch) {
-                    let torchStatus = track.getSettings().torch;
-                    track.applyConstraints({ advanced: [{ torch: !torchStatus }] });
+                    flashlightOn = !flashlightOn; // Toggle flashlight state
+                    track.applyConstraints({ advanced: [{ torch: flashlightOn }] });
                 }
             }
         })
@@ -22,7 +24,7 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
 let autoScanActive = false;
 
 document.getElementById('autoScan').addEventListener('click', function() {
-    console.log('Auto scan toggled.');
+    console.log('Auto scan toggled');
     autoScanActive = !autoScanActive;
     if (autoScanActive) {
         Quagga.start();
