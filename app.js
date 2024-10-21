@@ -22,7 +22,7 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
 let autoScanActive = false;
 
 document.getElementById('autoScan').addEventListener('click', function() {
-    console.log('Auto scan toggled');
+    console.log('Auto scan toggled.');
     autoScanActive = !autoScanActive;
     if (autoScanActive) {
         Quagga.start();
