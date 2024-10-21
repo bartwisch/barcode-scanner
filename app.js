@@ -27,8 +27,8 @@ document.getElementById('autoScan').addEventListener('change', function() {
     autoScanActive = this.checked; // Update state based on checkbox
     if (autoScanActive) {
         startQuagga(); // Start scanning
+        document.getElementById('barcodeResult').style.backgroundColor = 'transparent'; // Clear background when scanning
     } else {
-        Quagga.stop(); // Stop scanning
         document.getElementById('barcodeResult').style.backgroundColor = 'rgba(211, 211, 211, 0.5)'; // Light grey with 50% opacity
     }
 });
@@ -77,9 +77,11 @@ function startQuagga() {
         }
         console.log("Initialization finished. Ready to start");
         Quagga.start();
-        document.getElementById('barcodeResult').style.backgroundColor = 'transparent'; // Clear background when scanning
     });
 }
+
+// Start the Quagga scanner
+startQuagga();
 
 // Event listener for processed barcodes
 Quagga.onDetected(function(result) {
