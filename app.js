@@ -1,4 +1,5 @@
 let flashlightOn = false; // Track flashlight state
+let autoScanActive = false; // Track auto scan state
 
 document.getElementById('toggleFlashlight').addEventListener('click', function() {
     console.log('Toggle flashlight clicked');
@@ -20,8 +21,6 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
         });
     }
 });
-
-let autoScanActive = false;
 
 document.getElementById('autoScan').addEventListener('click', function() {
     console.log('Auto scan toggled');
@@ -95,7 +94,9 @@ Quagga.onDetected(function(result) {
     // Stop scanning and wait for 2 seconds before resuming
     Quagga.stop();
     setTimeout(function() {
-        startQuagga(); // Restart the scanner
+        if (autoScanActive) {
+            startQuagga(); // Restart the scanner if autoscan is active
+        }
     }, 2000);
 });
 
