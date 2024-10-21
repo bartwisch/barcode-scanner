@@ -8,15 +8,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    <div id="app">
-        <button id="manualScan">Scan</button>
-        <button id="autoScan">Auto Scan Toggle</button>
-        <button id="toggleFlashlight">Flashlight Toggle</button>
-        <div id="barcodeResult">
-            <div id="scanArea"></div> <!-- Red rounded rectangle for scanning area -->
+    <main id="app">
+        <h1>Barcode Scanner</h1>
+        <div class="controls">
+            <button id="manualScan">Scan</button>
+            <label>
+                <input type="checkbox" id="autoScan"> Auto Scan
+            </label>
+            <button id="toggleFlashlight">Flashlight Toggle</button>
         </div>
+        <div id="barcodeResult"></div> <!-- Camera display -->
+        <h2>Scanned Codes</h2>
         <ul id="scannedCodesList"></ul> <!-- List for scanned codes -->
-    </div>
+    </main>
     <script src="app.js"></script>
 </body>
 </html>

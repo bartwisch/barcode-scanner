@@ -22,21 +22,25 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
     }
 });
 
-document.getElementById('autoScan').addEventListener('click', function() {
+document.getElementById('autoScan').addEventListener('change', function() {
     console.log('Auto scan toggled');
-    autoScanActive = !autoScanActive;
+    autoScanActive = this.checked; // Update state based on checkbox
     if (autoScanActive) {
-        Quagga.start();
+        startQuagga(); // Start scanning
     } else {
-        Quagga.stop();
+        Quagga.stop(); // Stop scanning
+        document.getElementById('barcodeResult').style.backgroundColor = 'rgba(211, 211, 211, 0.5)'; // Light grey with 50% opacity
     }
 });
 
 document.getElementById('manualScan').addEventListener('click', function() {
     console.log('Manual scan clicked');
-    // Start scanning once
+    // Start scanning for 1 second
     if (!Quagga.running) {
-        Quagga.start();
+        startQuagga();
+        setTimeout(function() {
+            Quagga.stop();
+        }, 1000); // Stop scanning after 1 second
     }
 });
 
@@ -73,11 +77,9 @@ function startQuagga() {
         }
         console.log("Initialization finished. Ready to start");
         Quagga.start();
+        document.getElementById('barcodeResult').style.backgroundColor = 'transparent'; // Clear background when scanning
     });
 }
-
-// Start the Quagga scanner
-startQuagga();
 
 // Event listener for processed barcodes
 Quagga.onDetected(function(result) {
@@ -91,7 +93,7 @@ Quagga.onDetected(function(result) {
     const scannedCodesList = document.getElementById('scannedCodesList');
     scannedCodesList.innerHTML = scannedCodes.map(c => `<li>${c}</li>`).join('');
     
-    // Stop scanning and wait for 2 seconds before resuming
+    // Stop scanning and wait for 2 seconds before resuming if autoscan is active
     Quagga.stop();
     setTimeout(function() {
         if (autoScanActive) {

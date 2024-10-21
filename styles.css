@@ -27,14 +27,6 @@ button {
     padding: 0;
 }
 
-#scanArea {
-    position: absolute;
-    top: 50%; /* Adjust as needed */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%; /* Width of the scanning area */
-    height: 50%; /* Height of the scanning area */
-    border: 2px solid red; /* Red border */
-    border-radius: 15px; /* Rounded corners */
-    pointer-events: none; /* Allow clicks to pass through */
+label {
+    cursor: pointer; /* Change cursor to pointer for better UX */
 }
